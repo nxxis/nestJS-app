@@ -6,14 +6,14 @@ export class UsersService {
   constructor(private userRepository: UserRepository) {}
 
   async createUserService(email: string, password: string) {
-    return this.userRepository.createUserRepository(email, password);
+    return await this.userRepository.createUserRepository(email, password);
   }
 
   async findUserService(id) {
-    return this.userRepository.findUserRepository(id);
+    return await this.userRepository.findUserRepository(id);
   }
 
-  async findUserByEmailService(email) {
-    return this.userRepository.findUserByEmailRepository(email);
+  async checkUserExistsService(email) {
+    return await this.userRepository.checkUserExistsRepository(email);
   }
 }

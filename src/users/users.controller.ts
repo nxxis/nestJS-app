@@ -1,19 +1,16 @@
-import { Body, Controller, Post, Get, Param } from '@nestjs/common';
-import { CreateUserDto } from './dtos/create-user.dto';
+import { Controller, Get, Param } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
+import { JwtGuard } from 'src/auth/guards/jwt.guards';
+import { UseGuards } from '@nestjs/common';
 
-@Controller('auth')
+@Controller('user')
 @Serialize(UserDto)
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  @Post('/signup')
-  createUser(@Body() body: CreateUserDto) {
-    return this.usersService.createUserService(body.email, body.password);
-  }
-
+  @UseGuards(JwtGuard)
   @Get('/:id')
   async findUser(@Param('id') id: string) {
     console.log('Handler is running');

@@ -35,9 +35,9 @@ export class UserRepository {
     }
   }
 
-  async findUserByEmailRepository(email: string) {
+  async checkUserExistsRepository(email: string) {
     try {
-      const user = await this.userModel.find({ email });
+      const user = await this.userModel.findOne({ email: email });
       if (!user) {
         throw new NotAcceptableException('User not found');
       }
