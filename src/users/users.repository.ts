@@ -38,9 +38,6 @@ export class UserRepository {
   async checkUserExistsRepository(email: string) {
     try {
       const user = await this.userModel.findOne({ email: email });
-      if (!user) {
-        throw new NotAcceptableException('User not found');
-      }
       return user;
     } catch (error) {
       throw new NotAcceptableException(error);

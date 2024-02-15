@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -17,14 +18,15 @@ export class AuthService {
         throw new BadRequestException('email/password incorrect');
       }
 
-      if (user.password !== password) {
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
         throw new BadRequestException('email/password incorrect');
       }
 
       const payload = { email: user.email, sub: user._id };
       const token = this.jwtService.sign(payload);
 
-      return { token };
+      return { token, id: user._id };
     } catch (error) {
       throw error;
     }
@@ -42,6 +44,6 @@ export class AuthService {
     const payload = { email: newUser.email, sub: newUser._id };
     const token = this.jwtService.sign(payload);
 
-    return { token };
+    return { token, id: newUser._id };
   }
 }
